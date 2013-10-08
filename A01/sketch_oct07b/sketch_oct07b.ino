@@ -1,6 +1,8 @@
 #include "LedControl.h"
 
 #define ROWS_IN_FIGURE 8
+#define DELAY_TIME_MILLISECONDS 50
+#define DELAY_BEFORE_REPEAT_MILLISECONDS 1000
 
 /** (I'm a Java developer)
  * pin 12 is connected to the DataIn
@@ -55,7 +57,7 @@ void setup()
   lc.setIntensity(0, 8);
   lc.clearDisplay(0);
   
-  delay(500);
+  delay(DELAY_BEFORE_REPEAT_MILLISECONDS);
 }
 
 void loop()
@@ -79,12 +81,14 @@ void drawFigure()
     for (int offset = 8; offset > 0; offset--)
     {
       drawRowsOffsetRight(currentFigure, offset);
+      delay(DELAY_TIME_MILLISECONDS);
     }
     
     // Everything you own in the box to the left
-    for (int negativeOffset = 0; negativeOffset <= 8; negativeOffset++)
+    for (int offset = 0; offset <= 8; offset++)
     {
-      drawRowsOffsetLeft(currentFigure, negativeOffset);
+      drawRowsOffsetLeft(currentFigure, offset);
+      delay(DELAY_TIME_MILLISECONDS);
     }
   }
 }
@@ -96,7 +100,6 @@ void drawRowsOffsetRight(const int figure[], int offset)
     int toDraw = figure[row] >> offset;
     drawRow(row, toDraw);
   }
-  delay(50);
 }
 
 void drawRowsOffsetLeft(const int figure[], int offset) {
@@ -105,7 +108,6 @@ void drawRowsOffsetLeft(const int figure[], int offset) {
     int toDraw = figure[row] << offset;
     drawRow(row, toDraw);
   }
-  delay(50);
 }
 
 void drawRow(int row, int toDraw)
