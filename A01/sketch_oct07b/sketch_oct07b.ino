@@ -1,5 +1,7 @@
 #include "LedControl.h"
 
+#define ROWS_IN_FIGURE 8
+
 /** (I'm a Java developer)
  * pin 12 is connected to the DataIn
  * pin 11 is connected to the CLK
@@ -71,29 +73,42 @@ void drawFigure()
   // For each figure...
   for (int figure = 0; figure < numberOfFigures; figure++)
   {
-    // ... scroll through the entire figure...
-    for (int offset = 8; offset >= -8; offset--)
+    const int * currentFigure = figures[figure];
+    
+    // To the left, to the left
+    for (int offset = 8; offset > 0; offset--)
     {
-      // ... by drawing each row...
-      for (int row = 0; row < 8; row++)
-      {
-        int currentFigure = figures[figure][row];
-
-        // ... by offsetting each row by the current iteration of drawing the letter.
-        int toDraw;
-        if (offset > 0)
-        {
-          toDraw = currentFigure >> offset;
-        }
-        else
-        {
-          toDraw = currentFigure << -offset;
-        }
-
-        lc.setRow(0, row, toDraw);
-      }
-
-      delay(50);
+      drawRowsOffsetRight(currentFigure, offset);
+    }
+    
+    // Everything you own in the box to the left
+    for (int negativeOffset = 0; negativeOffset <= 8; negativeOffset++)
+    {
+      drawRowsOffsetLeft(currentFigure, negativeOffset);
     }
   }
+}
+
+void drawRowsOffsetRight(const int figure[], int offset)
+{
+  for (int row = 0; row < ROWS_IN_FIGURE; row++)
+  {
+    int toDraw = figure[row] >> offset;
+    drawRow(row, toDraw);
+  }
+  delay(50);
+}
+
+void drawRowsOffsetLeft(const int figure[], int offset) {
+  for (int row = 0; row < ROWS_IN_FIGURE; row++)
+  {
+    int toDraw = figure[row] << offset;
+    drawRow(row, toDraw);
+  }
+  delay(50);
+}
+
+void drawRow(int row, int toDraw)
+{
+  lc.setRow(0, row, toDraw);
 }
