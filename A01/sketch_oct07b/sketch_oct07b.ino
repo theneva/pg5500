@@ -1,8 +1,6 @@
 #include "LedControl.h"
 
 #define ROWS_IN_FIGURE 8
-#define DELAY_TIME_MILLISECONDS 50
-#define DELAY_BEFORE_REPEAT_MILLISECONDS 1000
 
 /** (I'm a Java developer)
  * pin 12 is connected to the DataIn
@@ -12,8 +10,9 @@
 LedControl lc = LedControl(12, 11, 10, 1);
 
 static const int space[]={B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000};
-static const int dot[]=  {B00000000,B00000000,B00000000,B00000000,B00000000,B00111100,B00111100,B00111100};
-static const int at[]=   {B00111100,B01100110,B01011010,B01010010,B01011010,B01100110,B00111100,B00000000};
+static const int dot[]={B00000000,B00000000,B00000000,B00000000,B00000000,B00111100,B00111100,B00111100};
+static const int at[]={B00111100,B01100110,B01011010,B01010010,B01011010,B01100110,B00111100,B00000000};
+static const int hash[]={B01100110,B01100110,B11111111,B01100110,B01100110,B11111111,B01100110,B01100110};
 
 static const int A[]={B00000000,B11111100,B11001110,B11001110,B11111110,B11001110,B11001110,B11001110};
 static const int B[]={B00000000,B11111100,B11001110,B11111100,B11001110,B11001110,B11111110,B11111100};
@@ -45,7 +44,7 @@ static const int Z[]={B00000000,B11111100,B00001100,B00011000,B00110000,B0110000
 // The message.
 const int * figures[] =
 {
-  H, A, L, L, A, space, S, I, M, E, N,
+  hash, F, U, B, A, R
 };
 
 // Hacks!
@@ -57,7 +56,7 @@ void setup()
   lc.setIntensity(0, 8);
   lc.clearDisplay(0);
   
-  delay(DELAY_BEFORE_REPEAT_MILLISECONDS);
+  delay(500);
 }
 
 void loop()
@@ -66,7 +65,7 @@ void loop()
   drawFigure();
   
   // Wait before repeating.
-  delay(200);
+  delay(1000);
 }
 
 // Draws the figures specified in the const int * figures[].
@@ -81,14 +80,12 @@ void drawFigure()
     for (int offset = 8; offset > 0; offset--)
     {
       drawRowsOffsetRight(currentFigure, offset);
-      delay(DELAY_TIME_MILLISECONDS);
     }
     
     // Everything you own in the box to the left
-    for (int offset = 0; offset <= 8; offset++)
+    for (int negativeOffset = 0; negativeOffset <= 8; negativeOffset++)
     {
-      drawRowsOffsetLeft(currentFigure, offset);
-      delay(DELAY_TIME_MILLISECONDS);
+      drawRowsOffsetLeft(currentFigure, negativeOffset);
     }
   }
 }
@@ -100,6 +97,7 @@ void drawRowsOffsetRight(const int figure[], int offset)
     int toDraw = figure[row] >> offset;
     drawRow(row, toDraw);
   }
+  delay(50);
 }
 
 void drawRowsOffsetLeft(const int figure[], int offset) {
@@ -108,6 +106,7 @@ void drawRowsOffsetLeft(const int figure[], int offset) {
     int toDraw = figure[row] << offset;
     drawRow(row, toDraw);
   }
+  delay(50);
 }
 
 void drawRow(int row, int toDraw)
