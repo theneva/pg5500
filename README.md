@@ -15,6 +15,11 @@ I wanted a good overview when connecting the hardware pieces together, and a qui
 
 The first option would have made the characters in my code even less readable than it had to be, so I decided against that. The second option didn't seem too efficient, so that's a no there, as well. I went with the third option, as it seemed the least expensive way of achieving what I wanted.
 
+**The LED matrix**
+
+In short, the matrix is controlled by powering entire columns and rows. If you power one row and one column, the one LED where they intersect is lit, and if you power for example one row and two columns, the two LEDs in the intersections will be lit.
+
+
 **The LedControl library**
 
 I decided to use the [LedControl library][1] for communicating with the MAX7219. The library includes functions like
