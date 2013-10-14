@@ -17,7 +17,16 @@ The first option would have made the characters in my code even less readable th
 
 **The LedControl library**
 
-I decided to use the [LedControl library][1] for communicating with the MAX7219.
+I decided to use the [LedControl library][1] for communicating with the MAX7219. The library includes functions like
+
+    void setLed(int addr, int row, int col, boolean state);
+    
+and (to simplify use), the following.
+
+    void setRow(int addr, int row, byte value);
+
+These switch the requested LEDs on or off, and the only function I've really used for switching LEDs on and off is setRow(...).
+
 
 **The Fritzing model**
 
