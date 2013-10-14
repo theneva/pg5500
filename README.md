@@ -19,11 +19,31 @@ The first option would have made the characters in my code even less readable th
 
 I decided to use the [LedControl library][1] for communicating with the MAX7219. The library includes functions like
 
-    void setLed(int addr, int row, int col, boolean state);
+```c
+/* 
+ * Set the status of a single Led.
+ * Params :
+ * addr  address of the display 
+ * row   the row of the Led (0..7)
+ * col   the column of the Led (0..7)
+ * state If true the led is switched on, 
+ *	 if false it is switched off
+ */
+void setLed(int addr, int row, int col, boolean state);
+```
     
 and (to simplify use), the following.
 
-    void setRow(int addr, int row, byte value);
+```c
+/* 
+  * 1Set all 8 Led's in a row to a new state
+  * Params:
+  * addr  address of the display
+  * row   row which is to be set (0..7)
+  * value each bit set to 1 will light up the corresponding Led.
+  */
+void setRow(int addr, int row, byte value);
+```
 
 These switch the requested LEDs on or off, and the only function I've really used for switching LEDs on and off is setRow(...).
 
